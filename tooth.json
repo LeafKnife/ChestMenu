@@ -1,8 +1,8 @@
 {
     "format_version": 3,
-    "format_uuid": "746f6ef6-01a3-4049-a9a1-893d45a83220",
+    "format_uuid": "289f771f-2c9a-4d73-9f3f-8492495a924d",
     "tooth": "github.com/LeafKnife/ChestMenu",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "info": {
         "name": "ChestMenu",
         "description": "Minecraft 基岩版服务器(BDS) 箱子菜单插件",

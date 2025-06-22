@@ -144,9 +144,9 @@ void renderMenu(Player& player, const std::string& id) {
             // ll::service::getMinecraft()->mCommands->executeCommand(context, false);
             auto r = pl.executeCommand(std::string_view(cmd));
         });
-        auto gmPlayer = gmlib::GMPlayer::getServerPlayer(player.getNetworkIdentifier(), player.getClientSubId());
-        fm.sendTo(gmPlayer);
     }
+    auto gmPlayer = gmlib::GMPlayer::getServerPlayer(player.getNetworkIdentifier(), player.getClientSubId());
+    fm.sendTo(gmPlayer);
 }
 
 } // namespace chest_menu

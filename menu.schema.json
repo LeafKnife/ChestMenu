@@ -1,0 +1,128 @@
+{
+    "definitions": {
+        "item": {
+            "type": "object",
+            "$id": "item",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "aux": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "count": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 64
+                },
+                "lores": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "name",
+                "type"
+            ]
+        },
+        "button": {
+            "type": "object",
+            "$id": "button",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "item": {
+                    "type": "object",
+                    "$ref": "#/definitions/item"
+                },
+                "slot": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 53
+                },
+                "command": {
+                    "type": "string"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "isShow": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "name",
+                "item",
+                "slot"
+            ]
+        },
+        "menu": {
+            "type": "object",
+            "$id": "menu",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ]
+                },
+                "permission": {
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ]
+                },
+                "buttons": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "$ref": "#/definitions/button"
+                    },
+                    "minItems": 1
+                }
+            },
+            "required": [
+                "id",
+                "title",
+                "buttons"
+            ]
+        }
+    },
+    "type": "object",
+    "properties": {
+        "version": {
+            "type": "integer",
+            "enum": [
+                1
+            ]
+        },
+        "main": {
+            "$ref": "#/definitions/menu"
+        },
+        "menus": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "$ref": "#/definitions/menu"
+            }
+        }
+    },
+    "required": [
+        "main"
+    ]
+}

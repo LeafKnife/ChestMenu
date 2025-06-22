@@ -1,0 +1,40 @@
+{
+    "$schema": "./menu.schema.json",
+    "version": 1,
+    "main": {
+        "id": "main",
+        "title": "主菜单",
+        "type": 0,
+        "buttons": [
+            {
+                "name": "Give me an apple",
+                "item": {
+                    "name": "Give me an apple",
+                    "type": "minecraft:apple",
+                    "aux": 1,
+                    "count": 1,
+                    "lores": [
+                        "Give me an apple",
+                        "An apple a day, make doctor away"
+                    ]
+                },
+                "slot": 0,
+                "command": "give @s apple"
+            }
+        ]
+    },
+    "menus": [
+        {
+            "id": "test",
+            "title": "测试菜单",
+            "type": 1,
+            "buttons": []
+        },
+        {
+            "id": "op",
+            "title": "Op菜单",
+            "buttons": [],
+            "permission": 1
+        }
+    ]
+}

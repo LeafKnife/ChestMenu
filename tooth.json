@@ -1,35 +1,36 @@
 {
     "format_version": 3,
-    "format_uuid": "289f771f-2c9a-4d73-9f3f-8492495a924d",
-    "tooth": "example.com/my-user/my-mod",
-    "version": "0.0.0",
+    "format_uuid": "746f6ef6-01a3-4049-a9a1-893d45a83220",
+    "tooth": "github.com/LeafKnife/ChestMenu",
+    "version": "0.1.0",
     "info": {
-        "name": "My Mod",
-        "description": "Description of my mod",
+        "name": "ChestMenu",
+        "description": "Minecraft 基岩版服务器(BDS) 箱子菜单插件",
         "tags": [
             "platform:levilamina",
             "type:mod"
         ],
-        "avatar_url": "https://example.com/my-mod/avatar.png"
+        "avatar_url": "#"
     },
     "variants": [
         {
             "label": "",
             "platform": "win-x64",
             "dependencies": {
-                "github.com/LiteLDev/LeviLamina": "Required LeviLamina version range"
+                "github.com/LiteLDev/LeviLamina": "1.3.x",
+                "github.com/GroupMountain/GMLIB-Release": ">=1.3.0"
             },
             "assets": [
                 {
                     "type": "zip",
                     "urls": [
-                        "https://example.com/my-mod/assets.zip"
+                        "https://{{tooth}}/releases/download/v{{version}}/ChestMenu-windows-x64.zip"
                     ],
                     "placements": [
                         {
                             "type": "dir",
-                            "src": "my-mod/",
-                            "dest": "plugins/my-mod/"
+                            "src": "ChestMenu/",
+                            "dest": "plugins/ChestMenu/"
                         }
                     ]
                 }

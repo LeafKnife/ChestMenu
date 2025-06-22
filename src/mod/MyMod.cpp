@@ -1,4 +1,5 @@
 #include "mod/MyMod.h"
+#include "mod/ChestMenu.h"
 
 #include "ll/api/mod/RegisterHelper.h"
 
@@ -17,12 +18,16 @@ bool MyMod::load() {
 
 bool MyMod::enable() {
     getSelf().getLogger().debug("Enabling...");
+    chest_menu::registerCmd();
+    chest_menu::listenEvents();
+    chest_menu::loadMenus();
     // Code for enabling the mod goes here.
     return true;
 }
 
 bool MyMod::disable() {
     getSelf().getLogger().debug("Disabling...");
+    chest_menu::removeListen();
     // Code for disabling the mod goes here.
     return true;
 }

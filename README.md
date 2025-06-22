@@ -1,26 +1,37 @@
-# LeviLamina Mod Template
+# ChestMenu
 
-Mod Template for LeviLamina
+![GitHub Tag](https://img.shields.io/github/v/tag/LeafKnife/ChestMenu?include_prereleases&style=for-the-badge)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/LeafKnife/ChestMenu/total?style=for-the-badge)
 
-## Usage
+Minecraft 基岩版服务器(BDS) 箱子菜单插件
 
-For detailed instructions, see the [LeviLamina Documentation](https://lamina.levimc.org/developer_guides/tutorials/create_your_first_mod/)
+## 安装
 
-1. Generate a new repository from this template
-2. Clone the new repository
-3. Change the mod name and the expected LeviLamina version in `xmake.lua`
-4. Add your code.
-5. Run `xmake f -y -p windows -a x64 -m release` in the root of the repository
-6. Run `xmake` to build the mod.
+### 使用 Lip
 
-After a successful build, you will find mod in `bin/`
+```sh
+lip install github.com/LeafKnife/ChestMenu
+```
 
-## Contributing
+### 手动安装
 
-Ask questions by creating an issue.
+1. 从[发布页面](https://github.com/LeafKnife/ChestMenu/releases)下载最新版本。
+2. 解压`ChestMenu-windows-x64.zip`文件。
+3. 将`ChestMenu`文件夹复制到 BDS 安装目录下的 plugins 文件夹中。
 
-PRs accepted.
+## 使用
 
-## License
+启动服务器即可
 
-CC0-1.0 © LeviMC(LiteLDev)
+## 更新日志
+
+查看 [CHANGELOG](CHANGELOG.md) 文件获取更多信息。
+
+## 贡献
+
+如果您有任何问题，请开启一个 [issue](https://github.com/LeafKnife/ChestMenu/issues) 来讨论  
+欢迎 PR
+
+## 许可
+
+AGPL-3.0 Ⓒ LeafKnife

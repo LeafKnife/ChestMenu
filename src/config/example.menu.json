@@ -1,10 +1,10 @@
 {
-    "$schema": "./menu.schema.json",
+    "$schema": "https://raw.githubusercontent.com/LeafKnife/ChestMenu/main/menu.schema.json",
     "version": 1,
     "main": {
         "id": "main",
         "title": "主菜单",
-        "type": 0,
+        "type": 1,
         "buttons": [
             {
                 "name": "Give me an apple",

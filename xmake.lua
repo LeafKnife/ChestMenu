@@ -47,3 +47,10 @@ target("ChestMenu") -- Change this to your mod name.
     --     add_includedirs("src-client")
     --     add_files("src-client/**.cpp")
     -- end
+
+    after_build(function(target)
+        local menuPath = path.join(os.projectdir(), "src/config")
+        local outputPath = path.join(os.projectdir(), "bin/" .. target:name())
+        os.mkdir(outputPath)
+        os.cp(menuPath, outputPath)
+    end)

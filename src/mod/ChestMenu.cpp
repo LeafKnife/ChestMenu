@@ -62,10 +62,13 @@ void registerCmd() {
         }
     );
 
-    auto& cmdOP = ll::command::CommandRegistrar::getInstance()
-                      .getOrCreateCommand("reloadmenu", "LK-Menu | 重新加载菜单", CommandPermissionLevel::Admin);
+    auto& cmdReload = ll::command::CommandRegistrar::getInstance()
+                          .getOrCreateCommand("reloadmenu", "LK-Menu | 重新加载菜单", CommandPermissionLevel::Admin);
 
-    cmdOP.overload().execute([&](CommandOrigin const& origin, CommandOutput& output) { loadMenus(); });
+    cmdReload.overload().execute([&](CommandOrigin const& origin, CommandOutput& output) {
+        loadMenus();
+        output.success("已重新加载menu.json文件");
+    });
 };
 
 void listenEvents() {
@@ -81,7 +84,7 @@ void listenEvents() {
         auto& player    = ev.self();
         auto  inventory = player.mInventory->mInventory.get();
         auto  clock     = ItemStack(VanillaItemNames::Clock().getString());
-        ItemLockHelper::setItemLockMode(clock, ::ItemLockMode::LockInInventory);
+        // ItemLockHelper::setItemLockMode(clock, ::ItemLockMode::LockInInventory);
         if (inventory->getItemCount(clock) < 1) {
             inventory->addItemToFirstEmptySlot(clock);
         }
@@ -96,8 +99,9 @@ void removeListen() {
 
 void loadMenus() {
     menusMap.clear();
-    auto menu_path = my_mod::MyMod::getInstance().getSelf().getModDir() / "menu.json";
+    auto menu_path = my_mod::MyMod::getInstance().getSelf().getConfigDir() / "menu.json";
     if (!std::filesystem::exists(menu_path)) {
+        my_mod::MyMod::getInstance().getSelf().getLogger().warn("未检测到menu.json文件，插件无法正常使用");
         return;
     }
     auto content = ll::file_utils::readFile(menu_path);

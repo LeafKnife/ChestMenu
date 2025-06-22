@@ -21,7 +21,13 @@ lip install github.com/LeafKnife/ChestMenu
 
 ## 使用
 
-启动服务器即可
+修改menu.json文件，启动服务器即可（默认进服送钟，使用钟即可打开菜单）
+
+### 命令
+
+`/menu [id]` - 打开菜单(id选填，默认打开主菜单)
+
+`/reloadmenu` - 重新加载menu.json文件，需要op及以上权限
 
 ## 更新日志
 

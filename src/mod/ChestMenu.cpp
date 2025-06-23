@@ -6,6 +6,7 @@
 #include <nlohmann/json.hpp>
 #include <string_view>
 
+#include <gmlib/gm/enum/ChestType.h>
 #include <gmlib/gm/ui/ChestForm.h>
 #include <gmlib/mc/world/ItemStack.h>
 #include <gmlib/mc/world/actor/Player.h>
@@ -84,9 +85,15 @@ void listenEvents() {
         auto& player    = ev.self();
         auto  inventory = player.mInventory->mInventory.get();
         auto  clock     = ItemStack(VanillaItemNames::Clock().getString());
+        clock.mUserData = std::make_unique<CompoundTag>(CompoundTag{
+            {"ench",                    ListTag{}                                        },
+            {"minecraft:keep_on_death", true                                             },
+            {"minecraft:item_lock",     static_cast<uchar>(ItemLockMode::LockInInventory)}
+        });
         // ItemLockHelper::setItemLockMode(clock, ::ItemLockMode::LockInInventory);
         if (inventory->getItemCount(clock) < 1) {
             inventory->addItemToFirstEmptySlot(clock);
+            player.refreshInventory();
         }
     });
 };
@@ -120,14 +127,20 @@ void loadMenus() {
 };
 
 void renderMenu(Player& player, const std::string& id) {
-    auto find = menusMap.find(id);
-    auto menu = menusMap.at("main");
+    auto gmPlayer = gmlib::GMPlayer::getServerPlayer(player.getNetworkIdentifier(), player.getClientSubId());
+    auto find     = menusMap.find(id);
+    auto menu     = menusMap.at("main");
     if (find != menusMap.end()) {
         menu = find->second;
     }
-    auto fm   = gmlib::ui::ChestForm(menu.title);
+    auto fm = gmlib::ui::ChestForm(
+        menu.title,
+        menu.type == 1 ? gmlib::ui::ChestType::BigChest : gmlib::ui::ChestType::SingleChest
+    );
     bool isOp = player.isOperator();
-    if (menu.permission == 1 && !isOp) return;
+    if (menu.permission == 1 && !isOp) {
+        player.sendMessage(std::string_view("权限不足，无法打开此菜单"));
+    }
     for (auto& bt : menu.buttons) {
         if (!bt.isShow && !isOp) {
             continue;
@@ -145,7 +158,6 @@ void renderMenu(Player& player, const std::string& id) {
             auto r = pl.executeCommand(std::string_view(cmd));
         });
     }
-    auto gmPlayer = gmlib::GMPlayer::getServerPlayer(player.getNetworkIdentifier(), player.getClientSubId());
     fm.sendTo(gmPlayer);
 }
 

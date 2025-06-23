@@ -11,15 +11,29 @@
                 "item": {
                     "name": "Give me an apple",
                     "type": "minecraft:apple",
-                    "aux": 1,
+                    "aux": 0,
                     "count": 1,
                     "lores": [
                         "Give me an apple",
                         "An apple a day, make doctor away"
                     ]
                 },
-                "slot": 0,
+                "slot": 33,
                 "command": "give @s apple"
+            },
+            {
+                "name": "测试菜单",
+                "item": {
+                    "name": "测试菜单",
+                    "type": "minecraft:clock",
+                    "aux": 0,
+                    "count": 1,
+                    "lores": [
+                        ""
+                    ]
+                },
+                "slot": 3,
+                "command": "menu test"
             }
         ]
     },
@@ -27,13 +41,54 @@
         {
             "id": "test",
             "title": "测试菜单",
-            "type": 1,
-            "buttons": []
+            "type": 0,
+            "buttons": [
+                {
+                    "name": "测试菜单",
+                    "item": {
+                        "name": "测试菜单",
+                        "type": "minecraft:clock",
+                        "aux": 0,
+                        "count": 1,
+                        "lores": []
+                    },
+                    "slot": 3,
+                    "command": "say hello"
+                },
+                {
+                    "name": "测试菜单",
+                    "item": {
+                        "name": "测试菜单",
+                        "type": "minecraft:clock",
+                        "aux": 0,
+                        "count": 1,
+                        "lores": [
+                            "隐藏菜单"
+                        ]
+                    },
+                    "slot": 10,
+                    "command": "say hello",
+                    "isShow": false
+                }
+            ]
         },
         {
             "id": "op",
             "title": "Op菜单",
-            "buttons": [],
+            "buttons": [
+                {
+                    "name": "测试菜单",
+                    "item": {
+                        "name": "测试菜单",
+                        "type": "minecraft:clock",
+                        "aux": 0,
+                        "count": 1,
+                        "lores": []
+                    },
+                    "slot": 3,
+                    "command": "say hello"
+                }
+            ],
             "permission": 1
         }
     ]

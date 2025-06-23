@@ -64,7 +64,7 @@ void registerCmd() {
     );
 
     auto& cmdReload = ll::command::CommandRegistrar::getInstance()
-                          .getOrCreateCommand("reloadmenu", "LK-Menu | 重新加载菜单", CommandPermissionLevel::Admin);
+                          .getOrCreateCommand("reloadmenu", "LK-Menu | 重新加载菜单", CommandPermissionLevel::GameDirectors);
 
     cmdReload.overload().execute([&](CommandOrigin const& origin, CommandOutput& output) {
         loadMenus();

@@ -9,6 +9,6 @@ void registerCmd();
 void listenEvents();
 void removeListen();
 void loadMenus();
-void renderMenu(Player& player, const std::string& id);
+void sendMenu(Player& player, const std::string& id);
 
 } // namespace chest_menu

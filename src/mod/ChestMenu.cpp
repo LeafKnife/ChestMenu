@@ -4,6 +4,7 @@
 
 #include <filesystem>
 #include <nlohmann/json.hpp>
+#include <optional>
 #include <string_view>
 
 #include <gmlib/gm/enum/ChestType.h>
@@ -16,6 +17,7 @@
 #include <ll/api/event/ListenerBase.h>
 #include <ll/api/event/player/PlayerJoinEvent.h>
 #include <ll/api/event/player/PlayerUseItemEvent.h>
+#include <ll/api/form/SimpleForm.h>
 #include <ll/api/io/FileUtils.h>
 #include <ll/api/service/Bedrock.h>
 #include <mc/deps/core/utility/MCRESULT.h>
@@ -59,12 +61,15 @@ void registerCmd() {
                 output.error("command.error.notplayer");
             }
             auto* player = (Player*)entity;
-            renderMenu(*player, param.id);
+            sendMenu(*player, param.id);
         }
     );
 
-    auto& cmdReload = ll::command::CommandRegistrar::getInstance()
-                          .getOrCreateCommand("reloadmenu", "LK-Menu | 重新加载菜单", CommandPermissionLevel::GameDirectors);
+    auto& cmdReload = ll::command::CommandRegistrar::getInstance().getOrCreateCommand(
+        "reloadmenu",
+        "LK-Menu | 重新加载菜单",
+        CommandPermissionLevel::GameDirectors
+    );
 
     cmdReload.overload().execute([&](CommandOrigin const& origin, CommandOutput& output) {
         loadMenus();
@@ -77,7 +82,7 @@ void listenEvents() {
     auto  useItemEv = evBus.emplaceListener<ll::event::PlayerUseItemEvent>([](ll::event::PlayerUseItemEvent& ev) {
         auto& player = ev.self();
         if (ev.item().getTypeName() == VanillaItemNames::Clock().getString()) {
-            renderMenu(player, "main");
+            sendMenu(player, "main");
         }
     });
 
@@ -126,13 +131,7 @@ void loadMenus() {
     }
 };
 
-void renderMenu(Player& player, const std::string& id) {
-    auto gmPlayer = gmlib::GMPlayer::getServerPlayer(player.getNetworkIdentifier(), player.getClientSubId());
-    auto find     = menusMap.find(id);
-    auto menu     = menusMap.at("main");
-    if (find != menusMap.end()) {
-        menu = find->second;
-    }
+inline void sendChestUI(gmlib::GMPlayer& player, Menu const& menu) {
     auto fm = gmlib::ui::ChestForm(
         menu.title,
         menu.type == 1 ? gmlib::ui::ChestType::BigChest : gmlib::ui::ChestType::SingleChest
@@ -140,6 +139,7 @@ void renderMenu(Player& player, const std::string& id) {
     bool isOp = player.isOperator();
     if (menu.permission == 1 && !isOp) {
         player.sendMessage(std::string_view("权限不足，无法打开此菜单"));
+        return;
     }
     for (auto& bt : menu.buttons) {
         if (!bt.isShow && !isOp) {
@@ -158,7 +158,45 @@ void renderMenu(Player& player, const std::string& id) {
             auto r = pl.executeCommand(std::string_view(cmd));
         });
     }
-    fm.sendTo(gmPlayer);
+    fm.sendTo(player);
+};
+
+inline void sendForm(gmlib::GMPlayer& player, Menu const& menu) {
+    auto fm = ll::form::SimpleForm();
+    fm.setTitle(menu.title);
+    bool isOp = player.isOperator();
+    if (menu.permission == 1 && !isOp) {
+        player.sendMessage(std::string_view("权限不足，无法打开此菜单"));
+        return;
+    }
+    for (auto& bt : menu.buttons) {
+        if (!bt.isShow && !isOp) {
+            continue;
+        }
+        auto cmd = bt.command;
+        fm.appendButton(bt.name, [cmd](Player& pl) {
+            CommandContext context =
+                CommandContext(cmd, std::make_unique<PlayerCommandOrigin>(pl), CommandVersion::CurrentVersion());
+            ll::service::getMinecraft()->mCommands->executeCommand(context, false);
+        });
+    }
+    fm.sendTo(player, [](Player& pl, int id, ll::form::FormCancelReason reason) {});
+    // player.sendMessage(std::string_view("TODO"));
+};
+
+void sendMenu(Player& player, const std::string& id) {
+    auto find = menusMap.find(id);
+    auto menu = menusMap.at("main");
+    if (find != menusMap.end()) {
+        menu = find->second;
+    }
+    auto gmPlayer = gmlib::GMPlayer::getServerPlayer(player.getNetworkIdentifier(), player.getClientSubId());
+    sendForm(gmPlayer, menu);
+    // if ((int)gmPlayer->mBuildPlatform < 3) {
+    //     sendForm(gmPlayer, menu);
+    // } else {
+    //     sendChestUI(gmPlayer, menu);
+    // }
 }
 
 } // namespace chest_menu
